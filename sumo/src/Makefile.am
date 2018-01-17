@@ -56,7 +56,7 @@ sumo_LDADD   = ./netload/libnetload.a \
 ./utils/vehicle/libvehicle.a \
 ./utils/shapes/libshapes.a \
 ./utils/emissions/libemissions.a \
-../../lib/libcommpact.so
+../../../lib/libcommpact.so \
 $(TRACI_LIBS) \
 $(COMMON_LIBS) \
 $(PYTHON_LIBS) \
