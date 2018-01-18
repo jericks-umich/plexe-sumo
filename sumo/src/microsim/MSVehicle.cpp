@@ -3125,4 +3125,6 @@ void MSVehicle::loadState(const SUMOSAXAttributes &attrs,
   // after creation
 }
 
+uint64_t MSVehicle::getEnclaveId() const { return enclave_id; }
+
 /****************************************************************************/

@@ -1478,6 +1478,9 @@ private:
 private:
   /// @brief enclave parameters
   uint64_t enclave_id;
+
+public:
+  uint64_t getEnclaveId() const;
 };
 
 #endif

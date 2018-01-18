@@ -422,7 +422,22 @@ SUMOReal MSCFModel_CC::_v(const MSVehicle *const veh, SUMOReal gap2pred,
   // compute the speed from the actual acceleration
   speed = MAX2(SUMOReal(0), egoSpeed + ACCEL2SPEED(engineAcceleration));
 
-  WRITE_MESSAGE("THIS IS A TEST\n");
+  std::cerr << "DEBUG: Checking speed of " << speed << " with Enclave.\n";
+  bool verdict;
+  check_allowed_speed(veh->getEnclaveId(), speed, &verdict);
+
+  if (!verdict) { // if enclave doesn't allow this change, don't set the change
+                  // and return the current speed
+    std::cerr << "Enclave blocked speed change to " << speed << ".\n";
+    if (invoker == MSCFModel_CC::FOLLOW_SPEED &&
+        vars->followSpeedSetTime !=
+            MSNet::getInstance()->getCurrentTimeStep()) {
+      return vars->controllerFollowSpeed;
+    }
+    if (invoker == MSCFModel_CC::FREE_SPEED) {
+      return vars->controllerFreeSpeed;
+    }
+  }
 
   // if we have to ignore modifications (e.g., when this method is invoked by
   // the lane changing logic)
