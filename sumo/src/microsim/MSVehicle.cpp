@@ -77,7 +77,7 @@
 #include <utils/xml/SUMOSAXAttributes.h>
 
 #include <commpact.h>
-#include <commpact_status.h>
+#include <commpact_types.h>
 
 #ifdef CHECK_MEMORY_LEAKS
 #include <foreign/nvwa/debug_new.h>
@@ -519,11 +519,18 @@ MSVehicle::MSVehicle(SUMOVehicleParameter *pars, const MSRoute *route,
       MSAbstractLaneChangeModel::build(type->getLaneChangeModel(), *this);
   myCFVariables = type->getCarFollowModel().createVehicleVariables();
 
-  // test initialize enclave
+  // initialize enclave
   commpact_status_t status;
-  status = init_crypto_enclave(&enclave_id, "/tmp/enclave.signed.so");
+  status = initEnclave(&enclave_id);
   if (status != CP_SUCCESS) {
     throw ProcessError("Could not initialize enclave.");
+  }
+
+  // test whether we can access the position index for this vehicle yet
+  CC_VehicleVariables *cvv = dynamic_cast<CC_VehicleVariables *>(myCFVariables);
+  if (cvv) { // if not null
+    int position = cvv->position;
+    printf("Position: %d\n", position);
   }
 }
 

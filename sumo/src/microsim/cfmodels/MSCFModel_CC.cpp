@@ -422,9 +422,9 @@ SUMOReal MSCFModel_CC::_v(const MSVehicle *const veh, SUMOReal gap2pred,
   // compute the speed from the actual acceleration
   speed = MAX2(SUMOReal(0), egoSpeed + ACCEL2SPEED(engineAcceleration));
 
-  std::cerr << "DEBUG: Checking speed of " << speed << " with Enclave.\n";
+  // std::cerr << "DEBUG: Checking speed of " << speed << " with Enclave.\n";
   bool verdict;
-  check_allowed_speed(veh->getEnclaveId(), speed, &verdict);
+  checkAllowedSpeed(veh->getEnclaveId(), speed, &verdict);
 
   if (!verdict) { // if enclave doesn't allow this change, don't set the change
                   // and return the current speed
@@ -704,6 +704,8 @@ void MSCFModel_CC::setGenericInformation(
     vars->position = *myPosition;
     // we changed our position, reset the controller
     resetConsensus(veh);
+    // inform the Enclave of our position in the platoon
+    setInitialPosition(veh->getEnclaveId(), *myPosition);
     break;
   }
   case CC_SET_PLATOON_SIZE: {

@@ -51,7 +51,7 @@
 #include <vector>
 
 #include <commpact.h>
-#include <commpact_status.h>
+#include <commpact_types.h>
 
 // ===========================================================================
 // class declarations
