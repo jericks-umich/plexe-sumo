@@ -1478,6 +1478,7 @@ private:
 private:
   /// @brief enclave parameters
   uint64_t enclave_id;
+  cp_ec256_public_t pubkey;
 
 public:
   uint64_t getEnclaveId() const;

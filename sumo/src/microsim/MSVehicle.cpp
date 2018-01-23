@@ -530,7 +530,18 @@ MSVehicle::MSVehicle(SUMOVehicleParameter *pars, const MSRoute *route,
   CC_VehicleVariables *cvv = dynamic_cast<CC_VehicleVariables *>(myCFVariables);
   if (cvv) { // if not null
     int position = cvv->position;
-    printf("Position: %d\n", position);
+    if (position > -1) {
+      printf("Position: %d\n", position);
+      status = setInitialPosition(enclave_id, position);
+    }
+  }
+
+  // initialize enclave keypair and set pubkey
+  // this must currently be done after setting the position index for the
+  // enclave because we are using the InitialSetup singleton class hack
+  status = initializeKeys(enclave_id, &pubkey);
+  if (status != CP_SUCCESS) {
+    throw ProcessError("Could not initialize enclave key pair.");
   }
 }
 
