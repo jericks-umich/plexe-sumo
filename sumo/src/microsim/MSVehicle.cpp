@@ -525,24 +525,9 @@ MSVehicle::MSVehicle(SUMOVehicleParameter *pars, const MSRoute *route,
   if (status != CP_SUCCESS) {
     throw ProcessError("Could not initialize enclave.");
   }
-
-  // test whether we can access the position index for this vehicle yet
-  CC_VehicleVariables *cvv = dynamic_cast<CC_VehicleVariables *>(myCFVariables);
-  if (cvv) { // if not null
-    int position = cvv->position;
-    if (position > -1) {
-      printf("Position: %d\n", position);
-      status = setInitialPosition(enclave_id, position);
-    }
-  }
-
-  // initialize enclave keypair and set pubkey
-  // this must currently be done after setting the position index for the
-  // enclave because we are using the InitialSetup singleton class hack
-  status = initializeKeys(enclave_id, &pubkey);
-  if (status != CP_SUCCESS) {
-    throw ProcessError("Could not initialize enclave key pair.");
-  }
+  // At this time, position is not yet set, so we don't do any more work setting
+  // up the enclave. Enclave setup resumes in setGenericInformation() in
+  // cfmodels/MSCFModel_CC.cpp
 }
 
 void MSVehicle::onRemovalFromNet(const MSMoveReminder::Notification reason) {
@@ -3141,6 +3126,23 @@ void MSVehicle::loadState(const SUMOSAXAttributes &attrs,
   myState.mySpeed = attrs.getFloat(SUMO_ATTR_SPEED);
   // no need to reset myCachedPosition here since state loading happens directly
   // after creation
+}
+
+void MSVehicle::enclaveVehicleSetup(int position) {
+  commpact_status_t status;
+  printf("enclaveSetup: Position %d\n", position);
+  // inform the enclave of this vehicle's position
+  status = setInitialPosition(enclave_id, position);
+  if (status != CP_SUCCESS) {
+    throw ProcessError("Could not set enclave position..");
+  }
+  // initialize enclave keypair and set pubkey
+  // this must currently be done after setting the position index for the
+  // enclave because we are using the InitialSetup singleton class hack
+  status = initializeKeys(enclave_id, &pubkey);
+  if (status != CP_SUCCESS) {
+    throw ProcessError("Could not initialize enclave key pair.");
+  }
 }
 
 uint64_t MSVehicle::getEnclaveId() const { return enclave_id; }

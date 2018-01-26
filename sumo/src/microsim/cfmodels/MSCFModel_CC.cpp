@@ -704,8 +704,16 @@ void MSCFModel_CC::setGenericInformation(
     vars->position = *myPosition;
     // we changed our position, reset the controller
     resetConsensus(veh);
+
     // inform the Enclave of our position in the platoon
-    setInitialPosition(veh->getEnclaveId(), *myPosition);
+    // Note: this only currently gets called during the platooning scenario
+    // setup, but in a more comprehensive scenario, would need to be removed and
+    // position set during the join procedure
+    MSVehicle *nonconst_veh = const_cast<MSVehicle *>(veh);
+    // ^^^ THIS IS EVIL (creates side effect on a const object), but we're
+    // doing it to make things work -- tear it out when you add join procedure
+    // and update the pubkey properly
+    nonconst_veh->enclaveVehicleSetup(*myPosition);
     break;
   }
   case CC_SET_PLATOON_SIZE: {

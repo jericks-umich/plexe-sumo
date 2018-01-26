@@ -1481,6 +1481,7 @@ private:
   cp_ec256_public_t pubkey;
 
 public:
+  void enclaveVehicleSetup(int position);
   uint64_t getEnclaveId() const;
 };
 
