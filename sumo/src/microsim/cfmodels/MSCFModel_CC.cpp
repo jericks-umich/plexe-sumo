@@ -28,6 +28,7 @@
 #endif
 
 #include "MSCFModel_CC.h"
+#include "MSCFModel_Enclave.h"
 #include <microsim/MSEdge.h>
 #include <microsim/MSLane.h>
 #include <microsim/MSNet.h>
@@ -424,8 +425,7 @@ SUMOReal MSCFModel_CC::_v(const MSVehicle *const veh, SUMOReal gap2pred,
 
   // std::cerr << "DEBUG: Checking speed of " << speed << " with Enclave.\n";
   bool verdict;
-  checkAllowedSpeed(veh->getEnclaveId(), speed, &verdict);
-
+  verdict = veh->myEnclave->checkIfAllowedSpeed(speed);
   if (!verdict) { // if enclave doesn't allow this change, don't set the change
                   // and return the current speed
     std::cerr << "Enclave blocked speed change to " << speed << ".\n";
@@ -702,18 +702,13 @@ void MSCFModel_CC::setGenericInformation(
   case CC_SET_VEHICLE_POSITION: {
     int *myPosition = (int *)content;
     vars->position = *myPosition;
-    // we changed our position, reset the controller
-    resetConsensus(veh);
-
     // inform the Enclave of our position in the platoon
     // Note: this only currently gets called during the platooning scenario
     // setup, but in a more comprehensive scenario, would need to be removed and
     // position set during the join procedure
-    MSVehicle *nonconst_veh = const_cast<MSVehicle *>(veh);
-    // ^^^ THIS IS EVIL (creates side effect on a const object), but we're
-    // doing it to make things work -- tear it out when you add join procedure
-    // and update the pubkey properly
-    nonconst_veh->enclaveVehicleSetup(*myPosition);
+    veh->myEnclave->enclaveVehicleSetup(*myPosition);
+    // we changed our position, reset the controller
+    resetConsensus(veh);
     break;
   }
   case CC_SET_PLATOON_SIZE: {

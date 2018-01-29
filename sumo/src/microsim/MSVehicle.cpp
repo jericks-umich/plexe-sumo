@@ -51,6 +51,7 @@
 #include "MSStoppingPlace.h"
 #include "MSVehicle.h"
 #include "MSVehicleType.h"
+#include "cfmodels/MSCFModel_Enclave.h"
 #include "devices/MSDevice_Transportable.h"
 #include <algorithm>
 #include <cassert>
@@ -75,9 +76,6 @@
 #include <utils/iodevices/OutputDevice.h>
 #include <utils/vehicle/DijkstraRouterTT.h>
 #include <utils/xml/SUMOSAXAttributes.h>
-
-#include <commpact.h>
-#include <commpact_types.h>
 
 #ifdef CHECK_MEMORY_LEAKS
 #include <foreign/nvwa/debug_new.h>
@@ -520,14 +518,10 @@ MSVehicle::MSVehicle(SUMOVehicleParameter *pars, const MSRoute *route,
   myCFVariables = type->getCarFollowModel().createVehicleVariables();
 
   // initialize enclave
-  commpact_status_t status;
-  status = initEnclave(&enclave_id);
-  if (status != CP_SUCCESS) {
-    throw ProcessError("Could not initialize enclave.");
-  }
-  // At this time, position is not yet set, so we don't do any more work setting
-  // up the enclave. Enclave setup resumes in setGenericInformation() in
-  // cfmodels/MSCFModel_CC.cpp
+  myEnclave = new Enclave();
+  // At this time, vehicle position is not yet set, so we don't do any more
+  // work setting up the enclave. Enclave setup resumes in
+  // setGenericInformation() in cfmodels/MSCFModel_CC.cpp
 }
 
 void MSVehicle::onRemovalFromNet(const MSMoveReminder::Notification reason) {
@@ -3127,24 +3121,5 @@ void MSVehicle::loadState(const SUMOSAXAttributes &attrs,
   // no need to reset myCachedPosition here since state loading happens directly
   // after creation
 }
-
-void MSVehicle::enclaveVehicleSetup(int position) {
-  commpact_status_t status;
-  printf("enclaveSetup: Position %d\n", position);
-  // inform the enclave of this vehicle's position
-  status = setInitialPosition(enclave_id, position);
-  if (status != CP_SUCCESS) {
-    throw ProcessError("Could not set enclave position..");
-  }
-  // initialize enclave keypair and set pubkey
-  // this must currently be done after setting the position index for the
-  // enclave because we are using the InitialSetup singleton class hack
-  status = initializeKeys(enclave_id, &pubkey);
-  if (status != CP_SUCCESS) {
-    throw ProcessError("Could not initialize enclave key pair.");
-  }
-}
-
-uint64_t MSVehicle::getEnclaveId() const { return enclave_id; }
 
 /****************************************************************************/

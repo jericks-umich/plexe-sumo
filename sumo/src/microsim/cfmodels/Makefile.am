@@ -17,4 +17,5 @@ FirstOrderLagModel.cpp FirstOrderLagModel.h \
 RealisticEngineModel.cpp RealisticEngineModel.h \
 EngineParameters.cpp EngineParameters.h \
 VehicleEngineHandler.cpp VehicleEngineHandler.h \
-CC_VehicleVariables.cpp CC_VehicleVariables.h
+CC_VehicleVariables.cpp CC_VehicleVariables.h \
+MSCFModel_Enclave.cpp MSCFModel_Enclave.h

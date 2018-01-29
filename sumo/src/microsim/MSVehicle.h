@@ -43,6 +43,7 @@
 #include "MSLink.h"
 #include "MSVehicleType.h"
 #include "cfmodels/CC_VehicleVariables.h"
+#include "cfmodels/MSCFModel_Enclave.h"
 #include <deque>
 #include <list>
 #include <map>
@@ -1475,14 +1476,9 @@ private:
 
   MSEdgeWeightsStorage &_getWeightsStorage() const;
 
-private:
-  /// @brief enclave parameters
-  uint64_t enclave_id;
-  cp_ec256_public_t pubkey;
-
 public:
-  void enclaveVehicleSetup(int position);
-  uint64_t getEnclaveId() const;
+  /// @brief The vehicle's enclave
+  Enclave *myEnclave;
 };
 
 #endif
