@@ -33,6 +33,16 @@ void Enclave::enclaveVehicleSetup(int position) {
   if (status != CP_SUCCESS) {
     throw ProcessError("Could not initialize enclave key pair.");
   }
+
+  // set our initial speed bounds -- normally this would also be negotiated as
+  // part of the join procedure
+  // The plexe scenarios all start at 100km/h, so we're going to hardcode that
+  // in the MSCF_Enclave.h header with an allowed variance of 1 m/s
+  status = setInitialSpeedBounds(enclave_id, INITIAL_SPEED_BOUND_LOWER,
+                                 INITIAL_SPEED_BOUND_UPPER);
+  if (status != CP_SUCCESS) {
+    throw ProcessError("Could not set initial enclave speed bounds.");
+  }
 }
 
 bool Enclave::checkIfAllowedSpeed(double speed) {

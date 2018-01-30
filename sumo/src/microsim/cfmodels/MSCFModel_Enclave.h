@@ -8,6 +8,9 @@
 #include <commpact.h>
 #include <commpact_types.h>
 
+#define INITIAL_SPEED_BOUND_LOWER ((100.0 / 3.6) - 1.0)
+#define INITIAL_SPEED_BOUND_UPPER ((100.0 / 3.6) + 1.0)
+
 class Enclave {
 public:
   Enclave();
