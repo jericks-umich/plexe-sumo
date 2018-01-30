@@ -43,6 +43,17 @@ void Enclave::enclaveVehicleSetup(int position) {
   if (status != CP_SUCCESS) {
     throw ProcessError("Could not set initial enclave speed bounds.");
   }
+
+  // set the initial recovery phase timeout
+  long long int t = (long long int)MSNet::getInstance()->getCurrentTimeStep();
+  long long int timeout =
+      t * STEP_MULTIPLIER + RECOVERY_PHASE_TIMEOUT; // plexe step is .01
+                                                    // seconds, so multiply
+                                                    // steps by 10 to get time
+  status = setInitialRecoveryPhaseTimeout(enclave_id, timeout);
+  if (status != CP_SUCCESS) {
+    throw ProcessError("Could not set initial Recovery Phase timeout.");
+  }
 }
 
 bool Enclave::checkIfAllowedSpeed(double speed) {
