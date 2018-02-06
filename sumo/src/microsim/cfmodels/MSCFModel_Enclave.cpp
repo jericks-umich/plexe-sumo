@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <microsim/MSNet.h>
 #include <utils/common/UtilExceptions.h>
 
 #include "MSCFModel_Enclave.h"
