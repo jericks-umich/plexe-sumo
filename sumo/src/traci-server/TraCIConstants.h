@@ -32,12 +32,10 @@
 #ifndef TRACICONSTANTS_H
 #define TRACICONSTANTS_H
 
-
 // ****************************************
 // VERSION
 // ****************************************
 #define TRACI_VERSION 11
-
 
 // ****************************************
 // COMMANDS
@@ -65,7 +63,6 @@
 
 // command: close sumo
 #define CMD_CLOSE 0x7F
-
 
 // command: subscribe induction loop (e1) context
 #define CMD_SUBSCRIBE_INDUCTIONLOOP_CONTEXT 0x80
@@ -123,6 +120,9 @@
 // response: subscribe lane variable
 #define RESPONSE_SUBSCRIBE_LANE_VARIABLE 0xe3
 
+// command with response: set and then get a vehicle variable
+#define CMD_SET_GET_VEHICLE_VARIABLE 0x64
+#define RESPONSE_SET_GET_VEHICLE_VARIABLE 0x74
 // command: subscribe vehicle context
 #define CMD_SUBSCRIBE_VEHICLE_CONTEXT 0x84
 // response: subscribe vehicle context
@@ -286,7 +286,6 @@
 // response: subscribe person variable
 #define RESPONSE_SUBSCRIBE_PERSON_VARIABLE 0xee
 
-
 // ****************************************
 // POSITION REPRESENTATIONS
 // ****************************************
@@ -300,7 +299,6 @@
 #define POSITION_3D 0x03
 // Position on road map
 #define POSITION_ROADMAP 0x04
-
 
 // ****************************************
 // DATA TYPES
@@ -330,7 +328,6 @@
 // color (four ubytes)
 #define TYPE_COLOR 0x11
 
-
 // ****************************************
 // RESULT TYPES
 // ****************************************
@@ -346,7 +343,6 @@
 // return value for invalid queries (especially vehicle is not on the road)
 #define INVALID_INT_VALUE -1
 
-
 // ****************************************
 // TRAFFIC LIGHT PHASES
 // ****************************************
@@ -361,7 +357,6 @@
 // tl is off and not blinking
 #define TLPHASE_NOSIGNAL 0x05
 
-
 // ****************************************
 // DIFFERENT DISTANCE REQUESTS
 // ****************************************
@@ -369,7 +364,6 @@
 #define REQUEST_AIRDIST 0x00
 // driving distance
 #define REQUEST_DRIVINGDIST 0x01
-
 
 // ****************************************
 // VEHICLE REMOVAL REASONS
@@ -395,7 +389,6 @@
 // person / container stopping
 #define STAGE_WAITING 0x02
 
-
 // ****************************************
 // VARIABLE TYPES (for CMD_GET_*_VARIABLE)
 // ****************************************
@@ -411,19 +404,23 @@
 // subscribe context variables (get: all)
 #define SURROUNDING_VARIABLES_SUBSCRIPTION 0x03
 
-// last step vehicle number (get: induction loops, multi-entry/multi-exit detector, lanes, edges)
+// last step vehicle number (get: induction loops, multi-entry/multi-exit
+// detector, lanes, edges)
 #define LAST_STEP_VEHICLE_NUMBER 0x10
 
-// last step vehicle number (get: induction loops, multi-entry/multi-exit detector, lanes, edges)
+// last step vehicle number (get: induction loops, multi-entry/multi-exit
+// detector, lanes, edges)
 #define LAST_STEP_MEAN_SPEED 0x11
 
-// last step vehicle list (get: induction loops, multi-entry/multi-exit detector, lanes, edges)
+// last step vehicle list (get: induction loops, multi-entry/multi-exit
+// detector, lanes, edges)
 #define LAST_STEP_VEHICLE_ID_LIST 0x12
 
 // last step occupancy (get: induction loops, lanes, edges)
 #define LAST_STEP_OCCUPANCY 0x13
 
-// last step vehicle halting number (get: multi-entry/multi-exit detector, lanes, edges)
+// last step vehicle halting number (get: multi-entry/multi-exit detector,
+// lanes, edges)
 #define LAST_STEP_VEHICLE_HALTING_NUMBER 0x14
 
 // last step mean vehicle length (get: induction loops, lanes, edges)
@@ -443,7 +440,6 @@
 
 // last step person list (get: edges)
 #define LAST_STEP_PERSON_ID_LIST 0x1a
-
 
 // traffic light states, encoded as rRgGyYoO tuple (get: traffic lights)
 #define TL_RED_YELLOW_GREEN_STATE 0x20
@@ -484,8 +480,6 @@
 // current state, using external signal names (get: traffic lights)
 #define TL_EXTERNAL_STATE 0x2e
 
-
-
 // outgoing link number (get: lanes)
 #define LANE_LINK_NUMBER 0x30
 
@@ -500,7 +494,6 @@
 
 // list of not allowed vehicle classes (get&set: lanes)
 #define LANE_DISALLOWED 0x35
-
 
 // speed (get: vehicle)
 #define VAR_SPEED 0x40
@@ -601,8 +594,6 @@
 // speed deviation (set: vehicle)
 #define VAR_SPEED_DEVIATION 0x5f
 
-
-
 // speed without TraCI influence (get: vehicle)
 #define VAR_SPEED_WITHOUT_TRACI 0xb1
 
@@ -622,9 +613,9 @@
 // how lane changing is performed (set: vehicle)
 #define VAR_LANECHANGE_MODE 0xb6
 
-// maximum speed regarding max speed on the current lane and speed factor (get: vehicle)
+// maximum speed regarding max speed on the current lane and speed factor (get:
+// vehicle)
 #define VAR_ALLOWED_SPEED 0xb7
-
 
 // current CO2 emission of a node (get: vehicle, lane, edge)
 #define VAR_CO2EMISSION 0x60
@@ -659,7 +650,7 @@
 // edge index in current route (get: vehicle)
 #define VAR_ROUTE_INDEX 0x69
 
-//current waiting time (get: vehicle, lane)
+// current waiting time (get: vehicle, lane)
 #define VAR_WAITING_TIME 0x7a
 
 // current time step (get: simulation)
@@ -737,8 +728,6 @@
 // sets/retrieves abstract parameter
 #define VAR_PARAMETER 0x7e
 
-
-
 // add an instance (poi, polygon, vehicle, route)
 #define ADD 0x80
 
@@ -751,7 +740,7 @@
 // distance between points or vehicles
 #define DISTANCE_REQUEST 0x83
 
-//the current driving distance
+// the current driving distance
 #define VAR_DISTANCE 0x84
 
 // add a fully specified instance (vehicle)
@@ -769,7 +758,8 @@
 // retrieve information regarding the current person/container stage
 #define VAR_STAGE 0xc0
 
-// retrieve information regarding the next edge including crossings and walkingAreas (pedestrians only)
+// retrieve information regarding the next edge including crossings and
+// walkingAreas (pedestrians only)
 #define VAR_NEXT_EDGE 0xc1
 
 // retrieve the number of stages (person, container)
@@ -793,6 +783,9 @@
 // track vehicle
 #define VAR_TRACK_VEHICLE 0xa6
 
+// set contract and get signature
+#define VAR_SET_GET_CONTRACT_SIGNATURE 0xe8
+
 // get generic information
 #define VAR_GET_GENERIC_INFORMATION 0xe9
 
@@ -814,7 +807,8 @@
 // set a fixed acceleration to a vehicle controlled by CC/ACC/CACC
 #define VAR_SET_FIXED_ACCELERATION 0xef
 
-// get vehicle speed and acceleration, needed for example by the platoon leader (get: vehicle)
+// get vehicle speed and acceleration, needed for example by the platoon leader
+// (get: vehicle)
 #define VAR_GET_SPEED_AND_ACCELERATION 0xf0
 
 // set speed and acceleration of the platoon leader
@@ -823,13 +817,15 @@
 // get lane count for the street the vehicle is currently traveling
 #define VAR_GET_LANES_COUNT 0xf2
 
-// set the lane change action that the driver should perform as given by the platooning controller
+// set the lane change action that the driver should perform as given by the
+// platooning controller
 #define VAR_SET_LANE_CHANGE_ACTION 0xf3
 
 // set the cruise control desired speed
 #define VAR_SET_CC_DESIRED_SPEED 0xf4
 
-// set the currently active vehicle controller which can be either the driver, or the ACC or the CACC
+// set the currently active vehicle controller which can be either the driver,
+// or the ACC or the CACC
 #define VAR_SET_ACTIVE_CONTROLLER 0xf5
 
 // get whether a cruise controller is installed in the car
@@ -838,12 +834,15 @@
 // get radar data from the car
 #define VAR_GET_RADAR_DATA 0xf7
 
-// communicate with the cruise control to give him fake indications. this can be useful when you want
-// to advance a vehicle to a certain position, for example, for joining a platoon. clearly the ACC
+// communicate with the cruise control to give him fake indications. this can be
+// useful when you want
+// to advance a vehicle to a certain position, for example, for joining a
+// platoon. clearly the ACC
 // must always take into consideration both fake and real data
 #define VAR_SET_CONTROLLER_FAKE_DATA 0xf8
 
-// get the distance that a car has to travel until it reaches the end of its route
+// get the distance that a car has to travel until it reaches the end of its
+// route
 #define VAR_GET_DISTANCE_TO_END 0xf9
 
 // get the current lane change action
