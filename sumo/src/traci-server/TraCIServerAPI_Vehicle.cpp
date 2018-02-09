@@ -35,6 +35,8 @@
 
 #ifndef NO_TRACI
 
+#include <cstdlib>
+
 // clang-format off
 #include <microsim/MSNet.h>
 #include <microsim/MSInsertionControl.h>
@@ -2303,12 +2305,20 @@ bool TraCIServerAPI_Vehicle::processSetGet(TraCIServer &server,
   // execute command
   switch (variable) {
   case VAR_SET_GET_CONTRACT_SIGNATURE: {
-    cp_ec256_signature_t signature;
+    uint8_t num_signatures;
+    cp_ec256_signature_t *signatures;
+    cp_ec256_signature_t return_signature;
     contract_chain_t contract;
     inputStorage.readBuffer((unsigned char *)&contract,
                             sizeof(contract_chain_t));
-    v->myEnclave->getSignatureForNewContractChain(contract, &signature);
-    tempMsg.writeBuffer((unsigned char *)&signature,
+    num_signatures = (uint8_t)inputStorage.readChar();
+    signatures = (cp_ec256_signature_t *)std::malloc(
+        sizeof(cp_ec256_signature_t) * num_signatures);
+    inputStorage.readBuffer((unsigned char *)signatures,
+                            sizeof(cp_ec256_signature_t) * num_signatures);
+    v->myEnclave->newContractChainGetSignature(contract, &return_signature,
+                                               num_signatures, signatures);
+    tempMsg.writeBuffer((unsigned char *)&return_signature,
                         sizeof(cp_ec256_signature_t));
   } break;
   }

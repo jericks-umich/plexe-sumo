@@ -22,8 +22,10 @@ public:
   uint64_t getEnclaveId() const;
   uint64_t setEnclaveId(uint64_t id);
   bool checkIfAllowedSpeed(double speed);
-  void getSignatureForNewContractChain(contract_chain_t contract,
-                                       cp_ec256_signature_t *signature);
+  void newContractChainGetSignature(contract_chain_t contract,
+                                    cp_ec256_signature_t *return_signature,
+                                    uint8_t num_signatures,
+                                    cp_ec256_signature_t *signatures);
 
 private:
   uint64_t enclave_id;
