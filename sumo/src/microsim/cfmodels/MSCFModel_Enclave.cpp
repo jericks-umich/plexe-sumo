@@ -66,8 +66,8 @@ bool Enclave::checkIfAllowedSpeed(double speed) {
 void Enclave::newContractChainGetSignature(
     contract_chain_t contract, cp_ec256_signature_t *return_signature,
     uint8_t num_signatures, cp_ec256_signature_t *signatures) {
-  newContractChainGetSignatureEnclave(contract, return_signature,
-                                      num_signatures, signatures);
+  newContractChainGetSignatureCommpact(enclave_id, contract, return_signature,
+                                       num_signatures, signatures);
 }
 
 uint64_t Enclave::getEnclaveId() const { return enclave_id; }
