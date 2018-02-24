@@ -8,8 +8,8 @@
 #include <commpact.h>
 #include <commpact_types.h>
 
-#define INITIAL_SPEED_BOUND_LOWER ((100.0 / 3.6) - 1.0)
-#define INITIAL_SPEED_BOUND_UPPER ((100.0 / 3.6) + 1.0)
+#define INITIAL_SPEED_BOUND_LOWER 26.777000 // ((100.0 / 3.6) - 1.0)
+#define INITIAL_SPEED_BOUND_UPPER 28.777000 // ((100.0 / 3.6) + 1.0)
 
 #define RECOVERY_PHASE_TIMEOUT 500 // milliseconds
 #define STEP_MULTIPLIER 10         // plexe step is in .01 seconds, so multiply

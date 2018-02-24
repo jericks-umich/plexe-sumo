@@ -2316,8 +2316,11 @@ bool TraCIServerAPI_Vehicle::processSetGet(TraCIServer &server,
         sizeof(cp_ec256_signature_t) * num_signatures);
     inputStorage.readBuffer((unsigned char *)signatures,
                             sizeof(cp_ec256_signature_t) * num_signatures);
+    printf("sumo traci: got contract, sending to enclave for signature\n");
     v->myEnclave->newContractChainGetSignature(contract, &return_signature,
                                                num_signatures, signatures);
+    printf("sumo traci: returning signature %x\n",
+           *(unsigned int *)&return_signature);
     tempMsg.writeBuffer((unsigned char *)&return_signature,
                         sizeof(cp_ec256_signature_t));
   } break;
