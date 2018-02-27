@@ -21,7 +21,7 @@ Enclave::Enclave() : enclave_id(0) {
 
 void Enclave::enclaveVehicleSetup(int position) {
   commpact_status_t status;
-  printf("enclaveSetup: Position %d\n", position);
+  // printf("enclaveSetup: Position %d\n", position);
   // inform the enclave of this vehicle's position
   status = setInitialPosition(enclave_id, position);
   if (status != CP_SUCCESS) {
