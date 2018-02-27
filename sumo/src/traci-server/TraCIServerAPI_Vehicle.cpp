@@ -2312,7 +2312,7 @@ bool TraCIServerAPI_Vehicle::processSetGet(TraCIServer &server,
     inputStorage.readBuffer((unsigned char *)&contract,
                             sizeof(contract_chain_t));
     num_signatures = (uint8_t)inputStorage.readChar();
-    printf("sumo traci: getting %u signatures\n", num_signatures);
+    // printf("sumo traci: getting %u signatures\n", num_signatures);
     signatures = (cp_ec256_signature_t *)std::malloc(
         sizeof(cp_ec256_signature_t) * num_signatures);
     // for (int i = 0; i < sizeof(cp_ec256_signature_t) * num_signatures; i++) {
@@ -2324,10 +2324,10 @@ bool TraCIServerAPI_Vehicle::processSetGet(TraCIServer &server,
       inputStorage.readBuffer((unsigned char *)&(signatures[i]),
                               sizeof(cp_ec256_signature_t));
     }
-    if (num_signatures > 0) {
-      printf("sumo traci: first signature is %x\n",
-             *(unsigned int *)&signatures[0]);
-    }
+    // if (num_signatures > 0) {
+    //  printf("sumo traci: first signature is %x\n",
+    //         *(unsigned int *)&signatures[0]);
+    //}
     v->myEnclave->newContractChainGetSignature(contract, &return_signature,
                                                num_signatures, signatures);
     tempMsg.writeBuffer((unsigned char *)&return_signature,
