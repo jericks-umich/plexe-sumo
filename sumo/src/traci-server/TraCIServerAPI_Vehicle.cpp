@@ -2309,6 +2309,8 @@ bool TraCIServerAPI_Vehicle::processSetGet(TraCIServer &server,
     cp_ec256_signature_t *signatures;
     cp_ec256_signature_t return_signature;
     contract_chain_t contract;
+    double compute_time;
+
     inputStorage.readBuffer((unsigned char *)&contract,
                             sizeof(contract_chain_t));
     num_signatures = (uint8_t)inputStorage.readChar();
@@ -2328,10 +2330,11 @@ bool TraCIServerAPI_Vehicle::processSetGet(TraCIServer &server,
     //  printf("sumo traci: first signature is %x\n",
     //         *(unsigned int *)&signatures[0]);
     //}
-    v->myEnclave->newContractChainGetSignature(contract, &return_signature,
-                                               num_signatures, signatures);
+    v->myEnclave->newContractChainGetSignature(
+        contract, &return_signature, num_signatures, signatures, &compute_time);
     tempMsg.writeBuffer((unsigned char *)&return_signature,
                         sizeof(cp_ec256_signature_t));
+    tempMsg.writeDouble(compute_time);
   } break;
   }
 

@@ -428,7 +428,7 @@ SUMOReal MSCFModel_CC::_v(const MSVehicle *const veh, SUMOReal gap2pred,
   verdict = veh->myEnclave->checkIfAllowedSpeed(speed);
   if (!verdict) { // if enclave doesn't allow this change, don't set the change
                   // and return the current speed
-    std::cerr << "Enclave blocked speed change to " << speed << ".\n";
+    // std::cerr << "Enclave blocked speed change to " << speed << ".\n";
     if (invoker == MSCFModel_CC::FOLLOW_SPEED &&
         vars->followSpeedSetTime !=
             MSNet::getInstance()->getCurrentTimeStep()) {

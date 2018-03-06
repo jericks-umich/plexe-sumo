@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <string.h>
+#include <time.h>
 
 #include <microsim/MSNet.h>
 #include <utils/common/UtilExceptions.h>
@@ -65,9 +66,17 @@ bool Enclave::checkIfAllowedSpeed(double speed) {
 
 void Enclave::newContractChainGetSignature(
     contract_chain_t contract, cp_ec256_signature_t *return_signature,
-    uint8_t num_signatures, cp_ec256_signature_t *signatures) {
+    uint8_t num_signatures, cp_ec256_signature_t *signatures,
+    double *compute_time) {
+  // record starting time
+  clock_t start, end;
+  start = clock();
+
   newContractChainGetSignatureCommpact(enclave_id, contract, return_signature,
                                        num_signatures, signatures);
+  // record ending time
+  end = clock();
+  *compute_time = ((double)end - start) / CLOCKS_PER_SEC;
 }
 
 uint64_t Enclave::getEnclaveId() const { return enclave_id; }
